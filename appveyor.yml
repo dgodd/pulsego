@@ -1,0 +1,25 @@
+# version format
+version: 0.0.{build}-{branch}
+skip_tags: true
+clone_folder: c:\go\src\github.com\dgodd\pulsego
+environment:
+  GOPATH: c:\go
+  GOROOT: c:\go
+install:
+  - go get -v github.com/onsi/ginkgo/ginkgo
+  - go get -v github.com/onsi/gomega
+  - go get -v -t ./...
+  - export PATH=$PATH:$HOME/gopath/bin
+test_script:
+  - ginkgo -r --randomizeAllSpecs --randomizeSuites --failOnPending --cover --trace --race --compilers=2
+# notifications:
+#     # Webhook
+#     - provider: Webhook
+#       url: http://www.myhook2.com
+#       headers:
+#         User-Agent: myapp 1.0
+#         Authorization:
+#           secure: GhD+5xhLz/tkYY6AO3fcfQ==
+#       on_build_success: true
+#       on_build_failure: true
+#       on_build_status_changed: true
