@@ -1,9 +1,9 @@
 # version format
 version: 0.0.{build}-{branch}
 skip_tags: true
-clone_folder: c:\go\src\github.com\dgodd\pulsego
+clone_folder: c:\gopath\src\github.com\dgodd\pulsego
 environment:
-  GOPATH: c:\go
+  GOPATH: c:\gopath
   GOROOT: c:\go
 install:
   - go get -v github.com/onsi/ginkgo/ginkgo
@@ -12,6 +12,14 @@ install:
   - export PATH=$PATH:$HOME/gopath/bin
 test_script:
   - ginkgo -r --randomizeAllSpecs --randomizeSuites --failOnPending --cover --trace --race --compilers=2
+notifications:
+    # Webhook
+    # http://requestb.in/umqk7hum?inspect
+    - provider: Webhook
+      url: http://requestb.in/umqk7hum
+      on_build_success: true
+      on_build_failure: true
+      on_build_status_changed: true
 # notifications:
 #     # Webhook
 #     - provider: Webhook
