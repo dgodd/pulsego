@@ -9,8 +9,7 @@ install:
   - go get -v github.com/onsi/ginkgo/ginkgo
   - go get -v github.com/onsi/gomega
   - go get -v -t ./...
-build:
-  verbosity: minimal
+build: off
 test_script:
   - c:\gopath\bin\ginkgo -r --randomizeAllSpecs --randomizeSuites --failOnPending --cover --trace --race --compilers=2
 notifications:
