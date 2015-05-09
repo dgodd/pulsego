@@ -12,11 +12,11 @@ import (
 
 func Downloads(projects []*payload.Project) {
 	for _, project := range projects {
-		statuses, err := download.Download(*project)
+		statuses, isBuilding, err := download.Download(*project)
 		if err != nil {
 			panic(err)
 		}
-		fmt.Printf("%+v", statuses)
+		project.Building = isBuilding
 		project.Statuses = statuses
 	}
 }

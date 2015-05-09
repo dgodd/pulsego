@@ -7,7 +7,7 @@ import (
 	"github.com/dgodd/pulsego/payload"
 )
 
-func Download(project payload.Project) ([]payload.ProjectStatus, error) {
+func Download(project payload.Project) ([]payload.ProjectStatus, bool, error) {
 	resp, err := http.Get("https://ci.appveyor.com/api/projects/" + project.Repository + "/history?recordsNumber=10")
 	if err != nil {
 		panic(err)
@@ -17,9 +17,9 @@ func Download(project payload.Project) ([]payload.ProjectStatus, error) {
 	if err != nil {
 		panic(err)
 	}
-	statuses, err := payload.AppVeyorXmlPayload(body)
+	statuses, isBuilding, err := payload.AppVeyorXmlPayload(body)
 	if err != nil {
 		panic(err)
 	}
-	return statuses, err
+	return statuses, isBuilding, err
 }

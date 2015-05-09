@@ -12,16 +12,21 @@ import (
 var _ = Describe("AppVeyorXmlPayload", func() {
 	Describe("Full Fixture", func() {
 		var result []payload.ProjectStatus
+		var isBuilding bool
 
 		BeforeEach(func() {
 			xml, err := ioutil.ReadFile("./fixtures/appveyor.xml")
 			Expect(err).NotTo(HaveOccurred())
-			result, err = payload.AppVeyorXmlPayload(xml)
+			result, isBuilding, err = payload.AppVeyorXmlPayload(xml)
 			Expect(err).NotTo(HaveOccurred())
 		})
 
 		It("Has four records", func() {
 			Expect(result).To(HaveLen(4))
+		})
+
+		It("Returns IsBuilding", func() {
+			Expect(isBuilding).To(BeFalse())
 		})
 
 		It("Sets build ids", func() {

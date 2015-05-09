@@ -13,16 +13,17 @@ type build struct {
 	Created     string `json:"created"`
 }
 
-func AppVeyorXmlPayload(xmlContent []byte) ([]ProjectStatus, error) {
+func AppVeyorXmlPayload(xmlContent []byte) ([]ProjectStatus, bool, error) {
 	var a struct {
 		Builds []build `json:"builds"`
 	}
 	err := json.Unmarshal(xmlContent, &a)
 	if err != nil {
-		return nil, err
+		return nil, false, err
 	}
 	longform := "2006-01-02T15:04:05.0000000-07:00"
 	statuses := make([]ProjectStatus, len(a.Builds))
+	isBuilding := false
 	for i := 0; i < len(a.Builds); i++ {
 		// statuses[i].ProjectId = ???
 		statuses[i].BuildId = a.Builds[i].BuildId
@@ -31,6 +32,9 @@ func AppVeyorXmlPayload(xmlContent []byte) ([]ProjectStatus, error) {
 			statuses[i].PublishedAt = publishedAt
 		}
 		statuses[i].Success = a.Builds[i].Status == "success"
+		if a.Builds[i].Status == "building" {
+			isBuilding = true
+		}
 	}
-	return statuses, nil
+	return statuses, isBuilding, nil
 }
